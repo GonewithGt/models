@@ -42,6 +42,10 @@ def get_mask(inputs: tf.Tensor,
   to_mask = tf.cast(
       tf.reshape(to_mask, [batch_size, 1, to_seq_length]), dtype=dtype)
 
+  # 广播遵循以下规则：
+  #1. 如果输入张量的维度数小于目标形状的维度数，则在输入张量的前面添加维度，使其维度数与目标形状相同。
+  #2. 如果输入张量在某个维度上的大小为 1，则可以在该维度上进行广播，即将该维度上的值复制到目标形状的大小。
+  #3. 如果输入张量在某个维度上的大小不为 1 且与目标形状不匹配，则会引发错误。
   return tf.broadcast_to(to_mask, [batch_size, from_seq_length, to_seq_length])
 
 
