@@ -171,7 +171,7 @@ class BertEncoderV2(tf_keras.layers.Layer):
         name='self_attention_mask')
     self._num_layers = num_layers
     for i in range(num_layers):
-      layer = layers.TransformerEncoderBlock(
+      layer = layers.(
           num_attention_heads=num_attention_heads,
           inner_dim=inner_dim,
           inner_activation=inner_activation,
@@ -400,6 +400,7 @@ class BertEncoder(tf_keras.Model):
       num_attention_heads, seq_dim, seq_dim].
     return_word_embeddings: If true, also return the input word embedding
       sequence in the bert inference output.
+      截断正态分布是一种正态分布，但在两个标准差之外的值会被丢弃并重新生成。这意味着生成的随机数将集中在均值附近，并且不会有极端的值。这种初始化方法有助于避免梯度消失或梯度爆炸问题，从而使神经网络更容易训练。
   """
 
   def __init__(
@@ -521,6 +522,7 @@ class BertEncoder(tf_keras.Model):
           return_attention_scores=return_attention_scores,
           kernel_initializer=tf_utils.clone_initializer(initializer),
           name='transformer/layer_%d' % i)
+      
       transformer_layers.append(layer)
       data = layer([data, attention_mask],
                    output_range=transformer_output_range)
